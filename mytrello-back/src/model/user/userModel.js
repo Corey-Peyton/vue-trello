@@ -1,0 +1,50 @@
+const validator = require("validator");
+
+module.exports = (sequelize, DataTypes) => {
+  const user = sequelize.define(
+    "user",
+    {
+      firstname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lastname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: true,
+        validate: {
+          fn(val) {
+            if (!validator.isEmail(val)) {
+              throw new Error("[ReMeet-api|models|user] Invalid Email address");
+            }
+          },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
+      freezeTableName: true,
+      underscored: true,
+      timestamps: false,
+    }
+  );
+
+  user.associate = function associate(models) {
+    user.hasOne(models.user_setting);
+    // user.hasOne(models.userProfile);
+  };
+
+  return user;
+};

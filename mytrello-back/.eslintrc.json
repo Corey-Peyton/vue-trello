@@ -1,0 +1,40 @@
+{
+    "env": {
+        "es6": true,
+        "node": true,
+        "jest": true
+    },
+    "extends": [
+        "airbnb-base",
+        "prettier"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "prettier"
+    ],
+    "rules": {
+        "no-plusplus": ["error",  {"allowForLoopAfterthoughts": true}],
+        "class-methods-use-this":"off",
+        "no-console": "off",
+        "max-len": ["error",  {
+            "code": 100,
+            "ignoreComments": true,
+            "ignoreTrailingComments": true,
+            "ignoreUrls": true ,
+            "ignoreStrings": true,
+            "ignoreTemplateLiterals": true,
+            "ignoreRegExpLiterals": true,
+            "ignorePattern": "^\\s*var\\s.+=\\s*require\\s*\\("
+        }],
+        "prettier/prettier": "error",
+        "no-unused-vars": [1],
+        "camelcase": "off"
+    }
+}

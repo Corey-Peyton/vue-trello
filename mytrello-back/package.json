@@ -1,0 +1,43 @@
+{
+  "name": "mytrello-back",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node ./src/bin/index.js",
+    "dev": "cross-env DEBUG=* NODE_ENV=development nodemon --exec node ./src/bin/index.js",
+    "test": "cross-env NODE_ENV=test mocha --recursive test --errors-only --exit",
+    "test:user": "cross-env NODE_ENV=test mocha --recursive test/functional/user --errors-only --exit",
+    "style": "eslint --fix src"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "connect-flash": "^0.1.1",
+    "connect-redis": "^5.0.0",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-session": "^1.17.2",
+    "helmet": "^4.1.1",
+    "morgan": "~1.9.1",
+    "mysql2": "^2.2.5",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "redis": "^3.0.2",
+    "sequelize": "^6.3.5",
+    "validator": "^13.1.17"
+  },
+  "devDependencies": {
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-prettier": "^3.4.0",
+    "mocha": "^8.2.0",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.3.0",
+    "sqlite3": "^5.0.0",
+    "supertest": "^5.0.0"
+  }
+}

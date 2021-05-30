@@ -43,7 +43,6 @@ module.exports = (sequelize, DataTypes) => {
 
   user.associate = function associate(models) {
     user.hasOne(models.user_setting);
-    // user.hasOne(models.userProfile);
   };
 
   return user;

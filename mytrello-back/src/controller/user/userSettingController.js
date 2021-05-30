@@ -29,7 +29,6 @@ async function updateUserTheme(req, res) {
  * @param {Object} res Response
  */
 async function getUserTheme(req, res) {
-  console.log(req.params);
   const result = await service.getUserTheme(req.params.username);
   return res.status(result.statusCode).send(result.data);
 }

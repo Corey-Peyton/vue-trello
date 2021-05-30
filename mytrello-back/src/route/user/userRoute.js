@@ -10,9 +10,7 @@ const { getUserByUsername } = require("../../service/user/getUser");
 const router = express.Router();
 
 router.get("/login/success", async (req, res) => {
-  console.log(req.user.username);
   const user = await getUserByUsername(req.user.username);
-  console.log(user);
   res.status(200).send(user);
 });
 router.get("/login/failure", (req, res) => {

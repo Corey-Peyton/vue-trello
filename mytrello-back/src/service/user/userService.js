@@ -1,3 +1,5 @@
+const debug = require("debug")("service:user");
+
 const bcrypt = require("bcrypt");
 const db = require("../../loader/sequelize");
 const HTTP = require("../../config/HTTP");
@@ -54,7 +56,7 @@ class UserService {
         data: await getUserById(userCreated.id),
       };
     } catch (err) {
-      console.log("[User|Register]: ", err);
+      debug("[User|Register]: ", err);
       return { statusCode: HTTP.InternalServerError, data: err };
     }
   }
@@ -75,7 +77,7 @@ class UserService {
       }
       return { statusCode: HTTP.OK, data: users };
     } catch (err) {
-      console.log("[User|GetAll]: ", err);
+      debug("[User|GetAll]: ", err);
       return { statusCode: HTTP.InternalServerError, data: err };
     }
   }
@@ -94,7 +96,7 @@ class UserService {
 
       return { statusCode: HTTP.OK, data: user };
     } catch (err) {
-      console.log("[User|GetOne]: ", err);
+      debug("[User|GetOne]: ", err);
       return { statusCode: HTTP.InternalServerError, data: err };
     }
   }
@@ -121,7 +123,7 @@ class UserService {
 
       return { statusCode: HTTP.OK, data: userToUpdate.get() };
     } catch (err) {
-      console.log("[User|Update]: ", err);
+      debug("[User|Update]: ", err);
       return { statusCode: HTTP.InternalServerError, data: err };
     }
   }
@@ -147,7 +149,7 @@ class UserService {
 
       return { statusCode: HTTP.OK, data: userToUpdate.get() };
     } catch (err) {
-      console.log("[User|Update]: ", err);
+      debug("[User|Update]: ", err);
       return { statusCode: HTTP.InternalServerError, data: err };
     }
   }
@@ -169,7 +171,7 @@ class UserService {
       await userToDelete.destroy();
       return { statusCode: HTTP.OK, data: "User deleted" };
     } catch (err) {
-      console.log("[User|Delete]: ", err);
+      debug("[User|Delete]: ", err);
       return { statusCode: HTTP.InternalServerError, data: err };
     }
   }

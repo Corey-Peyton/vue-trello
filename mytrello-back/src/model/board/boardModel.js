@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   board.associate = function associate(models) {
-    board.belongsToMany(models.user, { through: "user_board" });
+    board.belongsToMany(models.user, {
+      as: "members",
+      through: "board_member",
+    });
     board.belongsTo(models.user, { as: "author" });
 
     board.hasMany(models.cardlist);

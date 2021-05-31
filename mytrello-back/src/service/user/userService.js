@@ -69,12 +69,10 @@ class UserService {
       /* Get All the user in the database */
       const users = await getAllUsers();
 
-      if (users == null) {
-        return {
-          statusCode: HTTP.NoContent,
-          data: "User not found",
-        };
+      if (users === null) {
+        return { statusCode: HTTP.NoContent, data: "User not found" };
       }
+
       return { statusCode: HTTP.OK, data: users };
     } catch (err) {
       debug("[User|GetAll]: ", err);

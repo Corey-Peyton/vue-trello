@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
   user.associate = function associate(models) {
     user.hasOne(models.user_setting);
 
-    user.belongsToMany(models.board, { through: "user_board" });
+    user.belongsToMany(models.board, { through: "board_member" });
     user.belongsToMany(models.card, { through: "user_card" });
     user.belongsToMany(models.comment, { through: "user_comment" });
   };

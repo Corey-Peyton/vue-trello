@@ -11,16 +11,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    {
-      freezeTableName: true,
-      underscored: true,
-    }
+    {}
   );
 
   board.associate = function associate(models) {
     board.belongsToMany(models.user, {
       as: "members",
-      through: "board_member",
+      through: "boardMembers",
     });
     board.belongsTo(models.user, { as: "author" });
 

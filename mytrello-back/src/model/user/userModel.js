@@ -35,18 +35,16 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      freezeTableName: true,
-      underscored: true,
       timestamps: false,
     }
   );
 
   user.associate = function associate(models) {
-    user.hasOne(models.user_setting);
+    user.hasOne(models.userSetting);
 
-    user.belongsToMany(models.board, { through: "board_member" });
-    user.belongsToMany(models.card, { through: "user_card" });
-    user.belongsToMany(models.comment, { through: "user_comment" });
+    user.belongsToMany(models.board, { through: "boardMembers" });
+    user.belongsToMany(models.card, { through: "userCards" });
+    user.belongsToMany(models.comment, { through: "userComments" });
   };
 
   return user;

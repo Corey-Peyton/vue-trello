@@ -6,16 +6,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      is_checked: {
+      checked: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         default: false,
       },
     },
-    {
-      freezeTableName: true,
-      underscored: true,
-    }
+    {}
   );
 
   checkitem.associate = function associate(models) {

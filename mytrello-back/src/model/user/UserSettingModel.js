@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
-  /* User_setting table */
-  const user_setting = sequelize.define(
-    "user_setting",
+  /* userSetting table */
+  const userSetting = sequelize.define(
+    "userSetting",
     {
       theme: {
         type: DataTypes.ENUM("Light", "Dark"),
@@ -21,14 +21,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      freezeTableName: true,
-      underscored: true,
       timestamps: false,
     }
   );
 
-  /* Model associate to user_setting */
-  user_setting.associate = function associate() {};
+  /* Model associate to userSetting */
+  userSetting.associate = function associate() {};
 
-  return user_setting;
+  return userSetting;
 };

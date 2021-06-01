@@ -7,14 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    {
-      freezeTableName: true,
-      underscored: true,
-    }
+    {}
   );
 
   comment.associate = function associate(models) {
-    comment.belongsToMany(models.user, { through: "user_comment" });
+    comment.belongsToMany(models.user, { through: "userComments" });
 
     comment.belongsTo(models.card);
   };

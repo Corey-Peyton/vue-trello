@@ -7,10 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    {
-      freezeTableName: true,
-      underscored: true,
-    }
+    {}
   );
 
   cardlist.associate = function associate(models) {

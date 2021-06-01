@@ -12,16 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         default: "#000000",
       },
     },
-    {
-      freezeTableName: true,
-      underscored: true,
-    }
+    {}
   );
 
   label.associate = function associate(models) {
     label.belongsTo(models.board);
 
-    label.belongsToMany(models.card, { through: "card_label" });
+    label.belongsToMany(models.card, { through: "cardLabels" });
   };
 
   return label;

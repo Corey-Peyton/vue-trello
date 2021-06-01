@@ -15,18 +15,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    {
-      freezeTableName: true,
-      underscored: true,
-    }
+    {}
   );
 
   card.associate = function associate(models) {
-    card.belongsToMany(models.user, { through: "user_card" });
+    card.belongsToMany(models.user, { through: "userCards" });
 
     card.belongsTo(models.cardlist);
 
-    card.belongsToMany(models.label, { through: "card_label" });
+    card.belongsToMany(models.label, { through: "cardLabels" });
 
     card.hasMany(models.comment);
     card.hasMany(models.checklist);

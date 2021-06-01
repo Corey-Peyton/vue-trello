@@ -38,7 +38,7 @@ async function getAllUserBoards(username) {
   }
 }
 
-async function createBoard(username, board) {
+async function createBoard(username, { title, isPublic }) {
   try {
     // Get the user
     const user = await db.user.findOne({
@@ -47,14 +47,20 @@ async function createBoard(username, board) {
     if (user === null)
       return { statusCode: HTTP.NoContent, data: "User not found" };
 
-    const boardCreated = await db.board.create({ ...board });
-    if (boardCreated === null)
+    const board = await db.board.create({ title, public: isPublic });
+    if (board === null)
       return { statusCode: HTTP.BadRequest, data: "Failed to create board" };
-    boardCreated.addMember(user);
-    boardCreated.setAuthor(user);
-    // TODO CREATE DEFAULT LABELS FOR BOARDS
+    board.addMember(user);
+    board.setAuthor(user);
 
-    return { statusCode: HTTP.OK, data: boardCreated };
+    // Create Default Labels
+    await board.createLabel({ color: "#51e898" });
+    await board.createLabel({ color: "#f2d600" });
+    await board.createLabel({ color: "#ff9f1a" });
+    await board.createLabel({ color: "#eb5a46" });
+    await board.createLabel({ color: "#0079bf" });
+
+    return { statusCode: HTTP.OK, data: board };
   } catch (error) {
     debug("[createBoard]: ", error);
     return {
@@ -63,9 +69,9 @@ async function createBoard(username, board) {
     };
   }
 }
-async function deleteBoard(board_id) {
+async function deleteBoard(boardId) {
   try {
-    const boardToDelete = await db.findByPk(board_id);
+    const boardToDelete = await db.board.findByPk(boardId);
     if (boardToDelete === null)
       return { statusCode: HTTP.NotFound, data: "Board Not Found" };
 
@@ -79,9 +85,21 @@ async function deleteBoard(board_id) {
     };
   }
 }
-async function getBoard(board_id) {
+async function getBoard(boardId) {
   try {
-    const board = await db.findByPk(board_id);
+    const board = await db.board.findByPk(boardId, {
+      attributes: { exclude: ["authorId"] },
+      include: [
+        { model: db.user, as: "author", attributes: { exclude: ["password"] } },
+        {
+          model: db.user,
+          as: "members",
+          attributes: { exclude: ["password"] },
+        },
+        db.cardlist,
+        db.label,
+      ],
+    });
     if (board === null)
       return { statusCode: HTTP.NotFound, data: "Board Not Found" };
 
@@ -94,9 +112,9 @@ async function getBoard(board_id) {
     };
   }
 }
-async function getBoardTitle(board_id) {
+async function getBoardTitle(boardId) {
   try {
-    const board = await db.findByPk(board_id);
+    const board = await db.board.findByPk(boardId);
     if (board === null)
       return { statusCode: HTTP.NotFound, data: "Board Not Found" };
 
@@ -109,9 +127,9 @@ async function getBoardTitle(board_id) {
     };
   }
 }
-async function updateBoardTitle(board_id, title) {
+async function updateBoardTitle(boardId, title) {
   try {
-    const board = await db.findByPk(board_id);
+    const board = await db.board.findByPk(boardId);
     if (board === null)
       return { statusCode: HTTP.NotFound, data: "Board Not Found" };
 
@@ -125,9 +143,9 @@ async function updateBoardTitle(board_id, title) {
     };
   }
 }
-async function isBoardPublic(board_id) {
+async function isBoardPublic(boardId) {
   try {
-    const board = await db.findByPk(board_id);
+    const board = await db.board.findByPk(boardId);
     if (board === null)
       return { statusCode: HTTP.NotFound, data: "Board Not Found" };
 
@@ -140,9 +158,9 @@ async function isBoardPublic(board_id) {
     };
   }
 }
-async function updateBoardPublic(board_id, is_public) {
+async function updateBoardPublic(boardId, is_public) {
   try {
-    const board = await db.findByPk(board_id);
+    const board = await db.board.findByPk(boardId);
     if (board === null)
       return { statusCode: HTTP.NotFound, data: "Board Not Found" };
 
@@ -156,15 +174,79 @@ async function updateBoardPublic(board_id, is_public) {
     };
   }
 }
-async function getBoardAuthor(board_id) {
+async function getBoardAuthor(boardId) {
   try {
-    const board = await db.findByPk(board_id);
+    const board = await db.board.findByPk(boardId);
     if (board === null)
       return { statusCode: HTTP.NotFound, data: "Board Not Found" };
 
-    return { statusCode: HTTP.OK, data: board.getAuthor() };
+    return { statusCode: HTTP.OK, data: await board.getAuthor() };
   } catch (error) {
     debug("[getBoardAuthor]: ", error);
+    return {
+      statusCode: HTTP.InternalServerError,
+      data: { name: error.name, message: error.message },
+    };
+  }
+}
+
+async function getBoardMembers(boardId) {
+  try {
+    const board = await db.board.findByPk(boardId);
+    if (board === null)
+      return { statusCode: HTTP.NotFound, data: "Board Not Found" };
+
+    const members = await board.getMembers({
+      attributes: { exclude: ["password"] },
+    });
+    return { statusCode: HTTP.OK, data: members };
+  } catch (error) {
+    debug("[getBoardMembers]: ", error);
+    return {
+      statusCode: HTTP.InternalServerError,
+      data: { name: error.name, message: error.message },
+    };
+  }
+}
+async function addBoardMember(boardId, username) {
+  try {
+    const board = await db.board.findByPk(boardId);
+    if (board === null)
+      return { statusCode: HTTP.NotFound, data: "Board Not Found" };
+
+    const user = await db.user.findOne({
+      where: { username },
+    });
+    if (user === null)
+      return { statusCode: HTTP.NotFound, data: "User not found" };
+
+    const member = await board.addMember(user);
+    return { statusCode: HTTP.OK, data: member };
+  } catch (error) {
+    debug("[getBoardMembers]: ", error);
+    return {
+      statusCode: HTTP.InternalServerError,
+      data: { name: error.name, message: error.message },
+    };
+  }
+}
+
+async function removeBoardMember(boardId, username) {
+  try {
+    const board = await db.board.findByPk(boardId);
+    if (board === null)
+      return { statusCode: HTTP.NotFound, data: "Board Not Found" };
+
+    const member = await db.user.findOne({
+      where: { username },
+    });
+    if (member === null)
+      return { statusCode: HTTP.NoContent, data: "Member not found" };
+
+    await board.removeMember(member);
+    return { statusCode: HTTP.OK, data: "User removed from board" };
+  } catch (error) {
+    debug("[getBoardMembers]: ", error);
     return {
       statusCode: HTTP.InternalServerError,
       data: { name: error.name, message: error.message },
@@ -183,4 +265,7 @@ module.exports = {
   isBoardPublic,
   updateBoardPublic,
   getBoardAuthor,
+  getBoardMembers,
+  addBoardMember,
+  removeBoardMember,
 };

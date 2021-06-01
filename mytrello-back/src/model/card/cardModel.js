@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   card.associate = function associate(models) {
-    card.belongsToMany(models.user, { through: "userCards" });
+    card.belongsToMany(models.user, { as: "members", through: "cardMembers" });
 
     card.belongsTo(models.cardlist);
 

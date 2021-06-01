@@ -1,4 +1,4 @@
-const debug = require("debug")("service:board");
+const debug = require("debug")("service:cardlist");
 
 const db = require("../../loader/sequelize");
 const HTTP = require("../../config/HTTP");

@@ -38,7 +38,7 @@ async function getAllUserBoards(username) {
   }
 }
 
-async function createBoard(username, { title, isPublic }) {
+async function createBoard(username, newBoard) {
   try {
     // Get the user
     const user = await db.user.findOne({
@@ -47,7 +47,10 @@ async function createBoard(username, { title, isPublic }) {
     if (user === null)
       return { statusCode: HTTP.NoContent, data: "User not found" };
 
-    const board = await db.board.create({ title, public: isPublic });
+    const board = await db.board.create({
+      title: newBoard.title,
+      public: newBoard.public,
+    });
     if (board === null)
       return { statusCode: HTTP.BadRequest, data: "Failed to create board" };
     board.addMember(user);
@@ -158,13 +161,13 @@ async function isBoardPublic(boardId) {
     };
   }
 }
-async function updateBoardPublic(boardId, is_public) {
+async function updateBoardPublic(boardId, isPublic) {
   try {
     const board = await db.board.findByPk(boardId);
     if (board === null)
       return { statusCode: HTTP.NotFound, data: "Board Not Found" };
 
-    await board.update({ public: is_public });
+    await board.update({ public: isPublic });
     return { statusCode: HTTP.OK, data: board };
   } catch (error) {
     debug("[updateBoardPublic]: ", error);

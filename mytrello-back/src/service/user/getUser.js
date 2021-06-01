@@ -11,7 +11,7 @@ async function getUserById(user_id) {
     attributes: { exclude: ["password"] },
     include: [
       {
-        model: db.user_setting,
+        model: db.userSetting,
       },
     ],
   });
@@ -23,7 +23,7 @@ async function getUserByUsername(username) {
     attributes: { exclude: ["password"] },
     include: [
       {
-        model: db.user_setting,
+        model: db.userSetting,
       },
     ],
   });

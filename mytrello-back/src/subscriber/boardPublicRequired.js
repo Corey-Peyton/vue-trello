@@ -10,7 +10,7 @@ const db = require("../loader/sequelize");
  */
 async function boardPublicRequired(req, res, next) {
   try {
-    const board = await db.board.findByPk(req.params.board_id);
+    const board = await db.board.findByPk(req.params.boardId);
 
     /* board not found */
     if (board === null)

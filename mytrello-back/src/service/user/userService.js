@@ -33,7 +33,7 @@ class UserService {
         {
           include: [
             {
-              model: db.user_setting,
+              model: db.userSetting,
             },
           ],
         }
@@ -46,7 +46,7 @@ class UserService {
       }
 
       /* Create new user setting */
-      await userCreated.createUser_setting();
+      await userCreated.createUserSetting();
 
       /* Save new user */
       userCreated.save();

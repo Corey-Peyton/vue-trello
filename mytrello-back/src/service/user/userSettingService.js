@@ -12,7 +12,7 @@ async function getAllThemes() {
   try {
     return {
       statusCode: HTTP.OK,
-      data: db.user_setting.rawAttributes.theme.values,
+      data: db.userSetting.rawAttributes.theme.values,
     };
   } catch (err) {
     debug("[User Setting|Get All Theme]: ", err);
@@ -30,7 +30,7 @@ async function getAllThemes() {
 async function getUserTheme(username) {
   try {
     const user = await getUserByUsername(username);
-    const userSetting = await user.getUser_setting();
+    const userSetting = await user.getUserSetting();
     return {
       statusCode: HTTP.OK,
       data: userSetting.get().theme,
@@ -56,7 +56,7 @@ async function getUserTheme(username) {
 async function updateUserTheme(username, theme) {
   try {
     const user = await getUserByUsername(username);
-    const userSetting = await user.getUser_setting();
+    const userSetting = await user.getUserSetting();
 
     await userSetting.update({
       theme,
@@ -86,7 +86,7 @@ async function getAllLanguages() {
   try {
     return {
       statusCode: HTTP.OK,
-      data: db.user_setting.rawAttributes.language.values,
+      data: db.userSetting.rawAttributes.language.values,
     };
   } catch (err) {
     debug("[User Setting|Get All Language]: ", err);
@@ -107,7 +107,7 @@ async function getAllLanguages() {
 async function getUserLanguage(username) {
   try {
     const user = await getUserByUsername(username);
-    const userSetting = await user.getUser_setting();
+    const userSetting = await user.getUserSetting();
     return {
       statusCode: HTTP.OK,
       data: userSetting.get().language,
@@ -133,7 +133,7 @@ async function getUserLanguage(username) {
 async function updateUserLanguage(username, language) {
   try {
     const user = await getUserByUsername(username);
-    const userSetting = await user.getUser_setting();
+    const userSetting = await user.getUserSetting();
 
     await userSetting.update({
       language,
@@ -162,7 +162,7 @@ async function updateUserLanguage(username, language) {
 async function getAllSettings(username) {
   try {
     const user = await getUserByUsername(username);
-    const userSetting = await user.getUser_setting();
+    const userSetting = await user.getUserSetting();
     return {
       statusCode: HTTP.OK,
       data: userSetting.get(),
@@ -188,7 +188,7 @@ async function getAllSettings(username) {
 async function updateAllSettings(username, values) {
   try {
     const user = await getUserByUsername(username);
-    const userSetting = await user.getUser_setting();
+    const userSetting = await user.getUserSetting();
 
     await userSetting.update(...values);
     await userSetting.save();

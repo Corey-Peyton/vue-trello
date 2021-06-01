@@ -9,21 +9,26 @@ const boardPublicRequired = require("../../subscriber/boardPublicRequired");
 const boardController = require("../../controller/board/boardController");
 
 router.get("/boards", boardController.getAllPublicBoard);
-router.get("/boards/:board_id", boardPublicRequired, boardController.getBoard);
+router.get("/boards/:boardId", boardPublicRequired, boardController.getBoard);
 router.get(
-  "/boards/:board_id/title",
+  "/boards/:boardId/title",
   boardPublicRequired,
   boardController.getBoardTitle
 );
 router.get(
-  "/boards/:board_id/public",
+  "/boards/:boardId/public",
   boardPublicRequired,
   boardController.isBoardPublic
 );
 router.get(
-  "/boards/:board_id/auhtor",
+  "/boards/:boardId/auhtor",
   boardPublicRequired,
   boardController.getBoardAuthor
+);
+router.get(
+  "/boards/:boardId/members",
+  boardPublicRequired,
+  boardController.getBoardMembers
 );
 
 router.get(
@@ -41,50 +46,69 @@ router.post(
 );
 
 router.delete(
-  "/:username/boards/:board_id",
+  "/:username/boards/:boardId",
   passportAuthenticated,
   sameUserRequired,
   boardController.deleteBoard
 );
 
 router.get(
-  "/:username/boards/:board_id",
+  "/:username/boards/:boardId",
   passportAuthenticated,
   sameUserRequired,
   boardController.getBoard
 );
 
 router.get(
-  "/:username/boards/:board_id/title",
+  "/:username/boards/:boardId/title",
   passportAuthenticated,
   sameUserRequired,
   boardController.getBoardTitle
 );
 router.put(
-  "/:username/boards/:board_id/title",
+  "/:username/boards/:boardId/title",
   passportAuthenticated,
   sameUserRequired,
   boardController.updateBoardTitle
 );
 
 router.get(
-  "/:username/boards/:board_id/public",
+  "/:username/boards/:boardId/public",
   passportAuthenticated,
   sameUserRequired,
   boardController.isBoardPublic
 );
 router.put(
-  "/:username/boards/:board_id/public",
+  "/:username/boards/:boardId/public",
   passportAuthenticated,
   sameUserRequired,
   boardController.updateBoardPublic
 );
 
 router.get(
-  "/:username/boards/:board_id/author",
+  "/:username/boards/:boardId/author",
   passportAuthenticated,
   sameUserRequired,
   boardController.getBoardAuthor
+);
+
+router.get(
+  "/:username/boards/:boardId/members",
+  passportAuthenticated,
+  sameUserRequired,
+  boardController.getBoardMembers
+);
+router.post(
+  "/:username/boards/:boardId/members",
+  passportAuthenticated,
+  sameUserRequired,
+  boardController.addBoardMember
+);
+router.delete(
+  "/:username/boards/:boardId/members/:memberUsername",
+  passportAuthenticated,
+  sameUserRequired,
+  boardController.removeBoardMember
 );
 
 module.exports = router;

@@ -12,8 +12,8 @@ async function getUserByUsername(username) {
       where: { username },
       include: [
         {
-          model: db.user_setting,
-          as: "user_setting",
+          model: db.userSetting,
+          as: "userSetting",
         },
       ],
     });
@@ -34,8 +34,8 @@ async function getUserByEmail(email) {
       where: { email },
       include: [
         {
-          model: db.user_setting,
-          as: "user_setting",
+          model: db.userSetting,
+          as: "userSetting",
         },
       ],
     });
@@ -57,8 +57,8 @@ async function getUserById(id) {
       attributes: { exclude: ["password"] },
       include: [
         {
-          model: db.user_setting,
-          as: "user_setting",
+          model: db.userSetting,
+          as: "userSetting",
         },
       ],
     });

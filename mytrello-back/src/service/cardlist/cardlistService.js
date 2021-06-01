@@ -5,7 +5,7 @@ const HTTP = require("../../config/HTTP");
 
 async function createCardlist(boardId, { title }) {
   try {
-    // Get the user
+    // Get the board
     const board = await db.board.findByPk(boardId);
     if (board === null)
       return { statusCode: HTTP.NoContent, data: "Board not found" };

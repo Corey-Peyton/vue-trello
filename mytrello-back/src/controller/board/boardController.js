@@ -75,11 +75,14 @@ async function getBoardMembers(req, res) {
   return res.status(result.statusCode).send(result.data);
 }
 async function addBoardMember(req, res) {
-  if (typeof req.body.username === "undefined" || req.body.username === null)
-    return res.status(HTTP.BadRequest).send("Need username parameter");
+  if (
+    typeof req.body.memberUsername === "undefined" ||
+    req.body.memberUsername === null
+  )
+    return res.status(HTTP.BadRequest).send("Need memberUsername parameter");
   const result = await boardservice.addBoardMember(
     req.params.boardId,
-    req.body.username
+    req.body.memberUsername
   );
   return res.status(result.statusCode).send(result.data);
 }

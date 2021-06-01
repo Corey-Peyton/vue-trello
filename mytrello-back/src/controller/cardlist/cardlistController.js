@@ -3,7 +3,7 @@ const cardlistservice = require("../../service/cardlist/cardlistService");
 
 async function createCardlist(req, res) {
   if (typeof req.body.title === "undefined" || req.body.title === null)
-    return res.status(HTTP.BadRequest).send("Need title and public parameters");
+    return res.status(HTTP.BadRequest).send("Need title parameters");
 
   const result = await cardlistservice.createCardlist(
     req.params.boardId,
